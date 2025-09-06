@@ -66,8 +66,40 @@ export default class Tree {
     return root;
   }
 
-  add(value) {
+  insert(value) {
     this.root = this._insert(this.root, value);
+  }
+
+  _remove(root,value){
+    function findNextBiggest(node){
+        let nextBiggest = node.right;
+        while(nextBiggest.left !== null){
+            nextBiggest = nextBiggest.left;
+        }
+        return nextBiggest
+    }
+    if (root === null) return root;
+
+    if(value < root.value){
+        root.left = this._remove(root.left, value);
+    }else if(value > root.value){
+        root.right = this._remove(root.right, value);
+    } else if(value === root.value){
+        if(root.left === null){
+            return root.right;
+        } else if(root.right === null){
+            return root.left;
+        } else if(root.right !== null && root.left !== null){
+            let nextBiggest = findNextBiggest(root);
+            root.value = nextBiggest.value;
+            root.right = this._remove(root.right, nextBiggest.value);
+        }
+    }
+    return root;
+  }
+
+  remove(value){
+    this.root = this._remove(this.root, value);
   }
 
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
