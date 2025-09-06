@@ -48,6 +48,28 @@ export default class Tree {
     return merge(this._sortArray(left), this._sortArray(right));
   }
 
+  _insert(root, value) {
+    if (root === null) {
+      return new Node(value);
+    }
+
+    if (root.value === value) {
+      return root;
+    }
+
+    if (value < root.value) {
+      root.left = this._insert(root.left, value);
+    } else {
+      root.right = this._insert(root.right, value);
+    }
+
+    return root;
+  }
+
+  add(value) {
+    this.root = this._insert(this.root, value);
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
