@@ -124,6 +124,16 @@ export default class Tree {
     return computeHeight(node);
   }
 
+  depth(value, root = this.root){
+    if(root === null) return null;
+    if(root.value === value) return 0;
+    if(value < root.value){
+        return 1 + this.depth(value, root.left);
+    } else {
+        return 1 + this.depth(value, root.right);
+    }
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
