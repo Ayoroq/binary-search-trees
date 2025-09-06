@@ -112,6 +112,18 @@ export default class Tree {
     }
   }
 
+  height(value){
+    const node = this.find(value);
+    if(node === null) return null;
+
+    function computeHeight(n){
+        if(n === null) return -1; 
+        return 1 + Math.max(computeHeight(n.left), computeHeight(n.right));
+    }
+
+    return computeHeight(node);
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
