@@ -134,6 +134,14 @@ export default class Tree {
     }
   }
 
+  isBalanced(root = this.root){
+    if(root === null) return true;
+    const leftHeight = root.left ? this.height(root.left.value) : -1;
+    const rightHeight = root.right ? this.height(root.right.value) : -1;
+    if(Math.abs(leftHeight - rightHeight) > 1) return false;
+    return this.isBalanced(root.left) && this.isBalanced(root.right);
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
