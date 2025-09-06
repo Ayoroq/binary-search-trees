@@ -126,21 +126,51 @@ export default class Tree {
     }
   }
 
-//   levelOrderForEachRecursive(callback, queue = [this.root]) {
-//     if (!callback) {
-//       throw new Error("No callback function provided");
-//     }
-//     if (queue.length === 0) return;
+  //   levelOrderForEachRecursive(callback, queue = [this.root]) {
+  //     if (!callback) {
+  //       throw new Error("No callback function provided");
+  //     }
+  //     if (queue.length === 0) return;
 
-//     const node = queue.shift();
-//     if (node) {
-//       callback(node);
-//       if (node.left) queue.push(node.left);
-//       if (node.right) queue.push(node.right);
-//     }
+  //     const node = queue.shift();
+  //     if (node) {
+  //       callback(node);
+  //       if (node.left) queue.push(node.left);
+  //       if (node.right) queue.push(node.right);
+  //     }
 
-//     this.levelOrderForEachRecursive(callback, queue);
-//   }
+  //     this.levelOrderForEachRecursive(callback, queue);
+  //   }
+
+  inOrderForEach(callback, root = this.root) {
+    if (!callback) {
+      throw new Error("No callback function provided");
+    }
+    if (root === null) return;
+    this.inOrderForEach(callback, root.left);
+    callback(root);
+    this.inOrderForEach(callback, root.right);
+  }
+
+  preOrderForEach(callback, root = this.root) {
+    if (!callback) {
+      throw new Error("No callback function provided");
+    }
+    if (root === null) return;
+    callback(root);
+    this.preOrderForEach(callback, root.left);
+    this.preOrderForEach(callback, root.right);
+  }
+
+  postOrderForEach(callback, root = this.root) {
+    if (!callback) {
+      throw new Error("No callback function provided");
+    }
+    if (root === null) return;
+    this.postOrderForEach(callback, root.left);
+    this.postOrderForEach(callback, root.right);
+    callback(root);
+  }
 
   height(value) {
     const node = this.find(value);
