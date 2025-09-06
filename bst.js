@@ -70,35 +70,35 @@ export default class Tree {
     this.root = this._insert(this.root, value);
   }
 
-  _remove(root,value){
-    function findNextBiggest(node){
-        let nextBiggest = node.right;
-        while(nextBiggest.left !== null){
-            nextBiggest = nextBiggest.left;
-        }
-        return nextBiggest
+  _remove(root, value) {
+    function findNextBiggest(node) {
+      let nextBiggest = node.right;
+      while (nextBiggest.left !== null) {
+        nextBiggest = nextBiggest.left;
+      }
+      return nextBiggest;
     }
     if (root === null) return root;
 
-    if(value < root.value){
-        root.left = this._remove(root.left, value);
-    }else if(value > root.value){
-        root.right = this._remove(root.right, value);
-    } else if(value === root.value){
-        if(root.left === null){
-            return root.right;
-        } else if(root.right === null){
-            return root.left;
-        } else if(root.right !== null && root.left !== null){
-            let nextBiggest = findNextBiggest(root);
-            root.value = nextBiggest.value;
-            root.right = this._remove(root.right, nextBiggest.value);
-        }
+    if (value < root.value) {
+      root.left = this._remove(root.left, value);
+    } else if (value > root.value) {
+      root.right = this._remove(root.right, value);
+    } else if (value === root.value) {
+      if (root.left === null) {
+        return root.right;
+      } else if (root.right === null) {
+        return root.left;
+      } else if (root.right !== null && root.left !== null) {
+        let nextBiggest = findNextBiggest(root);
+        root.value = nextBiggest.value;
+        root.right = this._remove(root.right, nextBiggest.value);
+      }
     }
     return root;
   }
 
-  remove(value){
+  remove(value) {
     this.root = this._remove(this.root, value);
   }
 
@@ -112,35 +112,67 @@ export default class Tree {
     }
   }
 
-  height(value){
-    const node = this.find(value);
-    if(node === null) return null;
+  levelOrderForEach(callback, root = this.root) {
+    if (!callback) {
+      throw new Error("No callback function provided");
+    }
+    if (root === null) return;
+    const queue = [root];
+    while (queue.length) {
+      const node = queue.shift();
+      callback(node);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+  }
 
-    function computeHeight(n){
-        if(n === null) return -1; 
-        return 1 + Math.max(computeHeight(n.left), computeHeight(n.right));
+//   levelOrderForEachRecursive(callback, queue = [this.root]) {
+//     if (!callback) {
+//       throw new Error("No callback function provided");
+//     }
+//     if (queue.length === 0) return;
+
+//     const node = queue.shift();
+//     if (node) {
+//       callback(node);
+//       if (node.left) queue.push(node.left);
+//       if (node.right) queue.push(node.right);
+//     }
+
+//     this.levelOrderForEachRecursive(callback, queue);
+//   }
+
+  height(value) {
+    const node = this.find(value);
+    if (node === null) return null;
+
+    function computeHeight(n) {
+      if (n === null) return -1;
+      return 1 + Math.max(computeHeight(n.left), computeHeight(n.right));
     }
 
     return computeHeight(node);
   }
 
-  depth(value, root = this.root){
-    if(root === null) return null;
-    if(root.value === value) return 0;
-    if(value < root.value){
-        return 1 + this.depth(value, root.left);
+  depth(value, root = this.root) {
+    if (root === null) return null;
+    if (root.value === value) return 0;
+    if (value < root.value) {
+      return 1 + this.depth(value, root.left);
     } else {
-        return 1 + this.depth(value, root.right);
+      return 1 + this.depth(value, root.right);
     }
   }
 
-  isBalanced(root = this.root){
-    if(root === null) return true;
+  isBalanced(root = this.root) {
+    if (root === null) return true;
     const leftHeight = root.left ? this.height(root.left.value) : -1;
     const rightHeight = root.right ? this.height(root.right.value) : -1;
-    if(Math.abs(leftHeight - rightHeight) > 1) return false;
+    if (Math.abs(leftHeight - rightHeight) > 1) return false;
     return this.isBalanced(root.left) && this.isBalanced(root.right);
   }
+
+  reBalance() {}
 
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
