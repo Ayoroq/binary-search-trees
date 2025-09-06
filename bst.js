@@ -102,6 +102,16 @@ export default class Tree {
     this.root = this._remove(this.root, value);
   }
 
+  find(value, root = this.root) {
+    if (root === null) return null;
+    if (root.value === value) return root;
+    if (value < root.value) {
+      return this.find(value, root.left);
+    } else {
+      return this.find(value, root.right);
+    }
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
