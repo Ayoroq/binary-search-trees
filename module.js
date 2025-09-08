@@ -16,6 +16,7 @@ const tree = new Tree(numbers);
 
 // 2. Confirm tree is balanced
 console.log("Is tree balanced?", tree.isBalanced());
+tree.prettyPrint();
 
 // 3. Print traversals
 console.log("Level-order traversal:");

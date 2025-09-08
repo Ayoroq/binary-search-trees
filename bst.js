@@ -10,8 +10,8 @@ class Node {
 // This is the tree class
 export default class Tree {
   constructor(arr) {
-    const sorted = this._sortArray(this._removeDuplicate(arr));
-    this.root = this.buildTree(arr);
+    const sortedArr = this._sortArray(this._removeDuplicate(arr));
+    this.root = this.buildTree(sortedArr);
   }
 
   // This is the binary search tree function itself
